@@ -1,0 +1,292 @@
+openapi: 3.0.0
+info:
+  title: Contact Memory
+  version: 1.0.0
+servers:
+  - url: http://{{pro_stack_web_apis}}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+tags:
+  - name: CRUD Contacts
+  - name: Memory
+  - name: Files
+paths:
+  /api/memory/contact/page/1:
+    get:
+      tags:
+        - CRUD Contacts
+      summary: Get Contacts
+      description: |-
+        The API returns a JSON response with the following schema:
+
+        ``` json
+        {
+          "data": {
+            "contactResponse": [
+              {
+                "contactId": "",
+                "name": "",
+                "filesData": [],
+                "createdAtInMillis": 0
+              }
+            ],
+            "totalDocs": 0,
+            "limit": 0,
+            "totalPages": 0,
+            "page": 0,
+            "pagingCounter": 0,
+            "hasPrevPage": true,
+            "hasNextPage": true,
+            "prevPage": null,
+            "nextPage": 0
+          },
+          "successCode": "",
+          "code": 0
+        }
+
+         ```
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/memory/contact/add:
+    post:
+      tags:
+        - CRUD Contacts
+      summary: Add Contact
+      description: >-
+        This endpoint allows you to add a new contact to the memory API. The
+        request should be sent as an HTTP POST to
+        {{PRO_STACK_WEB_APIS}}/api/memory/contact/add with the contact details
+        in the request body.
+
+
+        ### Request Body
+
+
+        - name (string, required): The name of the contact to be added.
+            
+
+        ### Response
+
+
+        The response of this request can be documented as a JSON schema.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: MukulApiService Test
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/memory/contact/edit:
+    put:
+      tags:
+        - CRUD Contacts
+      summary: Edit Contact
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: MukulApiService Change
+                contactId: 675809ea0d45448fd96c6c07
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/memory/contact:
+    delete:
+      tags:
+        - CRUD Contacts
+      summary: Delete Contact
+      description: >-
+        ### Delete Contact Memory
+
+
+        This endpoint is used to delete a specific contact memory.
+
+
+        #### Request
+
+
+        - Method: DELETE
+            
+        - URL: `{{PRO_STACK_WEB_APIS}}/api/memory/contact`
+            
+        - Headers:
+            
+            - Content-Type: application/json
+                
+        - { "contactId": "67580ed001e793ba0ab7af34"}
+            
+
+        #### Response
+
+
+        The response of this request is a JSON schema representing the structure
+        of the response data. The schema will define the properties and their
+        data types that will be returned upon successful deletion of the contact
+        memory.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/memory/add:
+    post:
+      tags:
+        - Memory
+      summary: Add Memory
+      description: >-
+        This endpoint allows you to add a new memory associated with a specific
+        contact. The request should be sent via an HTTP POST to
+        {{PRO_STACK_WEB_APIS}}/api/memory/add. The request body should be in raw
+        format and include the "contactId" and "memoryText" fields.
+
+
+        ### Request Body
+
+
+        - `contactId` (string): The ID of the contact associated with the
+        memory.
+            
+        - `memoryText` (string): The text of the memory to be added.
+            
+
+        ### Response
+
+
+        The response will be in JSON format with the following schema:
+
+
+        ``` json
+
+        {
+            "type": "object",
+            "properties": {
+                "successCode": {"type": "string"},
+                "code": {"type": "number"}
+            }
+        }
+
+         ```
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                contactId: 67580ed001e793ba0ab7af34
+                memoryText: my contact number is 9797654356
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/memory/{contactId}:
+    get:
+      tags:
+        - Memory
+      summary: Get All Memories Of a Contact
+      description: >-
+        The endpoint retrieves memory data for a specific contact based on the
+        provided contact ID. The response is in JSON format and has the
+        following schema:
+
+
+        ``` json
+
+        {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "properties": {
+                        "contactMemories": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "memoryId": { "type": "string" },
+                                    "memoryText": { "type": "string" },
+                                    "createdAtInMillis": { "type": "number" }
+                                }
+                            }
+                        },
+                        "name": { "type": "string" }
+                    }
+                },
+                "successCode": { "type": "string" },
+                "code": { "type": "number" }
+            }
+        }
+
+         ```
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: contactId
+          in: path
+          schema:
+            type: string
+          required: true
+          example: 67580ed001e793ba0ab7af34
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/memory/2411df90-81f5-4f45-a739-d389a24530f5:
+    delete:
+      tags:
+        - Memory
+      summary: Delete Memory
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/memory/file/attach-file:
+    post:
+      tags:
+        - Files
+      summary: Add PDF
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                pdfFile:
+                  type: string
+                  format: binary
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
